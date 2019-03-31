@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.randomwords.app.configuration.DixConfig;
 import xyz.randomwords.app.entites.ResponseObject;
+import xyz.randomwords.app.entites.Tuple2;
 import xyz.randomwords.app.utils.MathUtils;
 
 import javax.swing.plaf.synth.SynthTabbedPaneUI;
