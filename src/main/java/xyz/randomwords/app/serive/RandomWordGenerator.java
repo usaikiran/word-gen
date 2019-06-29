@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class RandomWordGenerator {
 
-    private static int MAX_TIMEOUT = 40000;
+    private static int MAX_TIMEOUT = 5;
     private static int MAX_ATTEMPTS = 20;
 
     private DixConfig dix;
