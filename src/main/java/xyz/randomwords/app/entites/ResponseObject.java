@@ -1,8 +1,13 @@
 package xyz.randomwords.app.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude
 public class ResponseObject {
 
     String word;
+    @JsonIgnore
     double responseTime;
     double confidence;
 
@@ -10,7 +15,7 @@ public class ResponseObject {
 
         this.word = word;
         this.responseTime = responseTime;
-        this.confidence = confidence;
+        setConfidence( confidence );
     }
 
     public String getWord() {
@@ -34,14 +39,13 @@ public class ResponseObject {
     }
 
     public void setConfidence(double confidence) {
-        this.confidence = confidence;
+        this.confidence = confidence>1 ? 1 : confidence;
     }
 
     @Override
     public String toString() {
         return "{" +
                 "word='" + word + '\'' +
-                ", responseTime=" + responseTime +
                 ", confidence=" + confidence +
                 '}';
     }

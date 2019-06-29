@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class RandomWordGenerator {
 
-    private static int MAX_TIMEOUT = 4;
+    private static int MAX_TIMEOUT = 40000;
     private static int MAX_ATTEMPTS = 20;
 
     private DixConfig dix;
@@ -31,14 +31,14 @@ public class RandomWordGenerator {
 
         long startTime = System.currentTimeMillis();
         Double confidence = 1.0;
-        String word = recursive( beginningWith, length, confidence, -1, 0 );
-        return new ResponseObject( word, ( System.currentTimeMillis()-startTime )/1000.0, confidence );
+        Tuple2<String, Double> tuple = recursive( beginningWith, length, confidence, -1, 0 );
+        return new ResponseObject( tuple.c1(), ( System.currentTimeMillis()-startTime )/1000.0, tuple.c2() );
     }
 
-    private String recursive(String word, int wordLen, Double confidence, long startTime, int attempts) {
+    private Tuple2<String, Double> recursive(String word, int wordLen, Double confidence, long startTime, int attempts) {
 
         if( word.length() == wordLen ) {
-            return word;
+            return new Tuple2<>( word, confidence );
         }
         if( startTime == -1 ) {
             startTime = System.currentTimeMillis();
@@ -60,15 +60,19 @@ public class RandomWordGenerator {
                     || dix.markov( k1, alpha ) / dix.dixLen() > 0.06 )
                     && dix.position( alpha, word.length()+"" ) / dix.alphaFrequency( alpha ) > 0.05 ) ) {
 
+                Tuple2<String, Double> tuple;
                 String newWord = "";
-                newWord = recursive(word + alpha, wordLen,
-                        confidence*( 0.1 + dix.markov( k1, alpha ) / dix.maxMarkovComb() ),
+                tuple = recursive(word + alpha, wordLen,
+                        confidence+ word.length() == 0 ? 1 : ( 0.1 + dix.markov( k1, alpha ) / dix.maxMarkovComb() ),
                         startTime, attempts+1 );
+                newWord = tuple.c1();
+                confidence = tuple.c2();
+
                 if( newWord == null || newWord.length() == wordLen )
-                    return newWord;
+                    return new Tuple2<>( newWord, confidence );
             }
             alphaSet.remove( alpha );
         }
-        return word;
+        return new Tuple2<>( word, confidence );
     }
 }

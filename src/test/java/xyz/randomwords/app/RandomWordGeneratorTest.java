@@ -6,8 +6,8 @@ import xyz.randomwords.app.serive.RandomWordGenerator;
 
 public class RandomWordGeneratorTest {
 
-    DixConfig dixConfig = new DixConfig();
-    RandomWordGenerator randomWordGenerator = new RandomWordGenerator();
+    private DixConfig dixConfig = new DixConfig();
+    private RandomWordGenerator randomWordGenerator = new RandomWordGenerator();
 
     public RandomWordGeneratorTest(){
         randomWordGenerator.setDix( dixConfig );
