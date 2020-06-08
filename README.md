@@ -1,5 +1,5 @@
-# word-gen
-An API to generate random words using markov-chains.
+# Random Word Generator
+An API to generate pronounceable random words using markov-chains.
 
 ### Usage : 
 
